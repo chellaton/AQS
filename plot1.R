@@ -1,0 +1,5 @@
+yearly <- with(NEI, tapply(Emissions, year, sum, rm.na=TRUE))
+year <- unique(NEI$year)
+png("plot1.png", width=480, height = 480, type="quartz")
+plot(year, yearly, pch=19, col="dark red", ylab="Total Emissions in tons", xlab="Year", type="b")
+dev.off() 
