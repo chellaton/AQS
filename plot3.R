@@ -1,5 +1,6 @@
 library(dplyr)
 library(ggplot2)
+baltimoreData <- subset(NEI, fips=="24510")
 bg <- group_by(baltimoreData, type, year)
 bg$year <- as.character(bg$year)
 
@@ -10,4 +11,5 @@ p <- ggplot(df2, aes(x=year, y=Total_Emissions, group=type, color=type)) + ylab(
   theme(legend.title=element_blank())
 print(p)
 dev.off()
+rm(p)
 
