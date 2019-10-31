@@ -5,18 +5,19 @@ library(ggplot2)
 #SCC <- readRDS("Source_Classification_Code.rds")
 #NEI <- readRDS("summarySCC_PM25.rds")
 # filter for Baltimore
-baltimoreData <- subset(NEI, fips=="24510")
+baltimoreData <- subset(NEI, fips=="24510" | fips=="06037")
 motorSCC <- (SCC[grep("Motor",SCC$Short.Name),1:3])
 # join Baltimore NEI data with motorSCC by SCC
 motorNEI <- merge(baltimoreData, motorSCC, by="SCC")
 # filter for Baltimore, group_by year & summarize
-motorNEIgroup <- group_by(baltimoreData, year)
+motorNEIgroup <- group_by(baltimoreData, fips, year)
 motorNEIsumm <- summarize(motorNEIgroup, "Total_Emissions"=sum(Emissions))
 #
 # plot the graph in png file
 #
-png("plot5.png", height = 480, width = 480, type="quartz")
-p <- ggplot(motorNEIsumm, aes(year, Total_Emissions)) + ylab("Baltimore Emissions from Motor Vehicles in tons") +
+png("plot6.png", height = 480, width = 480, type="quartz")
+p <- ggplot(motorNEIsumm, aes(year, Total_Emissions, group=fips, color=fips)) + 
+  ylab("Baltimore Emissions from Motor Vehicles in tons") +
   geom_line() + geom_point()
 
 print(p)
